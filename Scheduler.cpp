@@ -44,9 +44,9 @@ std::string Scheduler::handleCompletion() {
 	return "";
 }
 
-float Scheduler::processResponseTimeAverage() {
-	float average;
-	int turnoverSum = 0, counter = 0;
+float Scheduler::processTurnoverTimeAverage() {
+	float average, counter = 0;
+	int turnoverSum = 0;
 
 	std::map<std::string, int>::iterator it;
 	for (it = turnoverTimes.begin(); it != turnoverTimes.end(); it++)
@@ -58,9 +58,9 @@ float Scheduler::processResponseTimeAverage() {
 	return turnoverSum / counter;
 }
 
-float Scheduler::processTurnoverTimeAverage() {
-	float average;
-	int responseSum = 0, counter = 0;
+float Scheduler::processResponseTimeAverage() {
+	float average, counter = 0;
+	int responseSum = 0;
 
 	std::map<std::string, int>::iterator it;
 	for (it = responseTimes.begin(); it != responseTimes.end(); it++)
