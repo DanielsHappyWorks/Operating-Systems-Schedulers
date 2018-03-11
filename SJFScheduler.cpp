@@ -17,7 +17,7 @@ std::string SJFScheduler::update() {
 	return Scheduler::update();
 }
 
-bool stortestJobComprator(Job left, Job right) {
+bool SJFJobComprator(Job left, Job right) {
 	if (left.mDuration == right.mDuration) {
 		return true;
 	}
@@ -27,7 +27,7 @@ bool stortestJobComprator(Job left, Job right) {
 std::string SJFScheduler::handleCompletion() {
 	std::string output = Scheduler::handleCompletion();
 	if (!output.empty()) {
-		sort(currentJobs.begin(),currentJobs.end(), &stortestJobComprator);
+		sort(currentJobs.begin(),currentJobs.end(), &SJFJobComprator);
 		return output;
 	}
 	return "";

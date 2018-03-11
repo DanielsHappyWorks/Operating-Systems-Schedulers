@@ -1,12 +1,13 @@
 #pragma once
 #include "Scheduler.hpp"
 #include <algorithm>
-class SJFScheduler :
+
+class STCFScheduler :
 	public Scheduler
 {
 public:
-	SJFScheduler(std::string name);
-	~SJFScheduler();
+	STCFScheduler(std::string name);
+	~STCFScheduler();
 
 	void arrive(Job job);
 	std::string update();

@@ -2,9 +2,11 @@
 #include "Job.hpp"
 #include "FIFOScheduler.hpp"
 #include "SJFScheduler.hpp"
+#include "STCFScheduler.hpp"
 #include <map>
 #include <vector>
 #include <iostream>
+#include <iomanip>
 
 std::map<int, Job> inputData;
 std::vector<Scheduler*> schedulers;
@@ -20,6 +22,7 @@ void processInput() {
 void setupSchedulers() {
 	schedulers.push_back(new FIFOScheduler("FIFO"));
 	schedulers.push_back(new SJFScheduler("SJF"));
+	schedulers.push_back(new STCFScheduler("STCF"));
 }
 
 int main() {
@@ -29,7 +32,7 @@ int main() {
 	std::cout << "T ";
 	for each (Scheduler* scheduler in schedulers)
 	{
-		std::cout << scheduler->name << " ";
+		std::cout << "\t" << scheduler->name << "\t";
 	}
 	std::cout << std::endl;
 
@@ -45,7 +48,7 @@ int main() {
 		std::cout << Scheduler::timePassed << " ";
 		for each (Scheduler* scheduler in schedulers)
 		{
-			std::cout << scheduler->update() << " ";
+			std::cout << "\t" << scheduler->update() << "\t";
 		}
 		std::cout << std::endl;
 
