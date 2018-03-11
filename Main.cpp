@@ -3,10 +3,10 @@
 #include "FIFOScheduler.hpp"
 #include "SJFScheduler.hpp"
 #include "STCFScheduler.hpp"
+#include "RRScheduler.hpp"
 #include <map>
 #include <vector>
 #include <iostream>
-#include <iomanip>
 
 std::map<int, Job> inputData;
 std::vector<Scheduler*> schedulers;
@@ -23,6 +23,8 @@ void setupSchedulers() {
 	schedulers.push_back(new FIFOScheduler("FIFO"));
 	schedulers.push_back(new SJFScheduler("SJF"));
 	schedulers.push_back(new STCFScheduler("STCF"));
+	schedulers.push_back(new RRScheduler("RR1", 1));
+	schedulers.push_back(new RRScheduler("RR2", 2));
 }
 
 int main() {
