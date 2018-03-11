@@ -1,5 +1,6 @@
 #pragma once
 #include "Job.hpp"
+#include <deque>
 
 class Scheduler
 {
@@ -13,5 +14,6 @@ public:
 
 	std::string name;
 	static int timePassed;
+	std::deque<Job> currentJobs;
 };
 

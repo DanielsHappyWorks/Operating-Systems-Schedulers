@@ -1,6 +1,7 @@
 #pragma once
 #include "Job.hpp"
 #include "FIFOScheduler.hpp"
+#include "SJFScheduler.hpp"
 #include <map>
 #include <vector>
 #include <iostream>
@@ -18,6 +19,7 @@ void processInput() {
 
 void setupSchedulers() {
 	schedulers.push_back(new FIFOScheduler("FIFO"));
+	schedulers.push_back(new SJFScheduler("SJF"));
 }
 
 int main() {
