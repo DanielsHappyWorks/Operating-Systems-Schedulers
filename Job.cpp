@@ -4,7 +4,6 @@ Job::Job() {
 }
 
 Job::Job(std::string name, int arrival, int duration) : mName(name), mArrival(arrival), mDuration(duration), mCompletion(0), mIsCompleted(false)
-
 {
 }
 

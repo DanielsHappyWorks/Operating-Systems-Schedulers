@@ -24,6 +24,12 @@ std::string RRScheduler::update() {
 
 		currentJobs.at(mCurrentJob).process();
 		jobName = currentJobs.at(mCurrentJob).mName;
+
+		if (!jobName.empty() && !responseTimes[jobName]) {
+			Job job = currentJobs.front();
+			responseTimes[jobName] = (Scheduler::timePassed + 1 - job.mArrival);
+		}
+
 		if (!currentJobs.at(mCurrentJob).isCompleted().empty()) {
 			mMarkJobForCompletion = mCurrentJob;
 			mCurrentJob--;
@@ -50,6 +56,8 @@ std::string RRScheduler::update() {
 std::string RRScheduler::handleCompletion() {
 	if (mMarkJobForCompletion != -1) {
 		std::string jobName = currentJobs.at(mMarkJobForCompletion).mName;
+		Job job = currentJobs.front();
+		turnoverTimes[jobName] = (Scheduler::timePassed + 1 - job.mArrival);
 		currentJobs.erase(currentJobs.begin() + mMarkJobForCompletion);
 		return jobName;
 	}

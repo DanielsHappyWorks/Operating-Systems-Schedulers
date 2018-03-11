@@ -5,11 +5,13 @@
 #include "STCFScheduler.hpp"
 #include "RRScheduler.hpp"
 #include <map>
+#include <set>
 #include <vector>
 #include <iostream>
 
 std::map<int, Job> inputData;
 std::vector<Scheduler*> schedulers;
+std::set<std::string> allJobNames;
 
 void processInput() {
 	std::string name;
@@ -19,6 +21,7 @@ void processInput() {
 	while (std::cin) {
 		std::cin >> name >>  arrivalTime >> durantion;
 		inputData[arrivalTime] = Job(name, arrivalTime, durantion);
+		allJobNames.emplace(name);
 	}
 
 	/* DEBUG INPUT
@@ -37,10 +40,7 @@ void setupSchedulers() {
 	schedulers.push_back(new RRScheduler("RR2", 2));
 }
 
-int main() {
-	processInput();
-	setupSchedulers();
-
+void outputSimulation() {
 	std::cout << "T ";
 	for each (Scheduler* scheduler in schedulers)
 	{
@@ -89,6 +89,68 @@ int main() {
 
 		Scheduler::timePassed++;
 	}
+	std::cout << "= SIMULATION COMPLETE" << std::endl;
+}
 
+void outputTrunoverPerJobStat() {
+	//Turnaround Time Per-Job Statistics
+	std::cout << "#\tJOB\t";
+	for each (Scheduler* scheduler in schedulers)
+	{
+		std::cout << scheduler->name << "\t";
+	}
+	std::cout << std::endl;
+
+	for each (std::string jobName in allJobNames)
+	{
+		std::cout << "T\t";
+		std::cout << jobName << "\t";
+		for each (Scheduler* scheduler in schedulers)
+		{
+			std::cout << scheduler->turnoverTimes[jobName] << "\t";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << "= INDIVIDUAL STATS COMPLETE" << std::endl;
+}
+
+void outputResponsePerJobStat() {
+	//Response Time Per-Job Statistics
+	std::cout << "#\tJOB\t";
+	for each (Scheduler* scheduler in schedulers)
+	{
+		std::cout << scheduler->name << "\t";
+	}
+	std::cout << std::endl;
+
+	for each (std::string jobName in allJobNames)
+	{
+		std::cout << "R\t";
+		std::cout << jobName << "\t";
+		for each (Scheduler* scheduler in schedulers)
+		{
+			std::cout << scheduler->responseTimes[jobName] << "\t";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << "= INDIVIDUAL STATS COMPLETE" << std::endl;
+}
+
+void outputAverageStats() {
+	std::cout << "# SCHEDULER AVG_TURNAROUND AVG_RESPONSE" << std::endl;
+	for each (Scheduler* scheduler in schedulers)
+	{
+		std::cout << "@\t" << scheduler->name << "\t" << scheduler->processTurnoverTimeAverage() << "\t" << scheduler->processResponseTimeAverage() << std::endl;
+	}
+	std::cout << "= AGGREGATE STATS COMPLETE" << std::endl;
+}
+
+int main() {
+	processInput();
+	setupSchedulers();
+	outputSimulation();
+	outputTrunoverPerJobStat();
+	outputResponsePerJobStat();
+	outputAverageStats();
 	std::cin.get();
 }

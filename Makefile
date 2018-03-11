@@ -4,5 +4,5 @@ Compiler = g++
 $(Project_Name): $(patsubst %.cpp, %.o, $(wildcard *.cpp))
 	$(Compiler) -o $(Project_Name) $^
 
-%.o: %.cpp $(wildcard *.h)
+%.o: %.cpp $(wildcard *.hpp)
 	$(Compiler) -c $<
