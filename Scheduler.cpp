@@ -1,8 +1,9 @@
 #include "Scheduler.hpp"
 
 int Scheduler::timePassed = 1;
+bool Scheduler::areCompleted = false;
 
-Scheduler::Scheduler(std::string name) :name(name)
+Scheduler::Scheduler(std::string name) :name(name), isCompleted(false)
 {
 }
 
@@ -12,6 +13,7 @@ Scheduler::~Scheduler()
 
 void Scheduler::arrive(Job job) {
 	currentJobs.push_back(job);
+	isCompleted = false;
 }
 
 std::string Scheduler::update() {
@@ -28,6 +30,9 @@ std::string Scheduler::handleCompletion() {
 			currentJobs.pop_front();
 			return job;
 		}
+	}
+	else {
+		isCompleted = true;
 	}
 	return "";
 }

@@ -53,5 +53,8 @@ std::string RRScheduler::handleCompletion() {
 		currentJobs.erase(currentJobs.begin() + mMarkJobForCompletion);
 		return jobName;
 	}
+	if (currentJobs.empty()) {
+		isCompleted = true;
+	}
 	return "";
 }

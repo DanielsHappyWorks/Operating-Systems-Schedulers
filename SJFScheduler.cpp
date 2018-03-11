@@ -30,5 +30,8 @@ std::string SJFScheduler::handleCompletion() {
 		sort(currentJobs.begin(),currentJobs.end(), &SJFJobComprator);
 		return output;
 	}
+	else {
+		isCompleted = true;
+	}
 	return "";
 }

@@ -13,7 +13,10 @@ public:
 	virtual std::string handleCompletion();
 
 	std::string name;
-	static int timePassed;
 	std::deque<Job> currentJobs;
+	bool isCompleted;
+
+	static int timePassed;
+	static bool areCompleted;
 };
 
