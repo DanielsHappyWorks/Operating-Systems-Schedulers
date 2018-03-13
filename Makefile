@@ -13,13 +13,13 @@ demo:
 	make demo2
 	make demo3
 
-demo1: demo1_input.txt
+demo1: demo1_input.txt $(Project_Name)
 	./$(Project_Name) < $@_input.txt | tee $@_output.txt
 
-demo2: demo2_input.txt
+demo2: demo2_input.txt $(Project_Name)
 	./$(Project_Name) < $@_input.txt | tee $@_output.txt
 
-demo3: demo3_input.txt
+demo3: demo3_input.txt $(Project_Name)
 	./$(Project_Name) < $@_input.txt | tee $@_output.txt
 
 demo1_input.txt:
