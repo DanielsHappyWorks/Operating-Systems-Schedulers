@@ -13,20 +13,20 @@ demo:
 	make demo2
 	make demo3
 
-demo1: demo_input1.txt
-	./$(Project_Name) < demo_input1.txt | tee $@_output.txt
+demo1: $@_input.txt
+	./$(Project_Name) < $@_input.txt | tee $@_output.txt
 
-demo2: demo_input2.txt
-	./$(Project_Name) < demo_input2.txt | tee $@_output.txt
+demo2: dem02_input.txt
+	./$(Project_Name) < $@_input.txt | tee $@_output.txt
 
-demo3: demo_input2.txt
-	./$(Project_Name) < demo_input3.txt | tee $@_output.txt
+demo3: demo3_input.txt
+	./$(Project_Name) < $@_input.txt | tee $@_output.txt
 
-demo_input1.txt:
+demo1_input.txt:
 	$(Job_Generator) > $@
 
-demo_input2.txt:
+demo2_input.txt:
 	$(Job_Generator) > $@
 
-demo_input3.txt:
+demo3_input.txt:
 	$(Job_Generator) > $@
