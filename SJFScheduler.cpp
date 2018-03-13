@@ -18,16 +18,15 @@ std::string SJFScheduler::update() {
 }
 
 bool SJFJobComprator(Job left, Job right) {
-	if (left.mDuration == right.mDuration) {
-		return true;
-	}
 	return left.mDuration < right.mDuration;
 }
 
 std::string SJFScheduler::handleCompletion() {
 	std::string output = Scheduler::handleCompletion();
 	if (!output.empty()) {
-		sort(currentJobs.begin(),currentJobs.end(), &SJFJobComprator);
+		if (currentJobs.size() > 1) {
+			sort(currentJobs.begin(), currentJobs.end(), &SJFJobComprator);
+		}
 		return output;
 	}
 	else {

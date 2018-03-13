@@ -8,7 +8,7 @@
 #include <vector>
 #include <iostream>
 
-std::map<int, Job> inputData;
+std::map<int, std::vector<Job>> inputData;
 std::vector<Scheduler*> schedulers;
 std::set<std::string> allJobNames;
 
@@ -19,16 +19,16 @@ void processInput() {
 
 	while (std::cin) {
 		std::cin >> name >>  arrivalTime >> durantion;
-		inputData[arrivalTime] = Job(name, arrivalTime, durantion);
+		inputData[arrivalTime].push_back(Job(name, arrivalTime, durantion));
 		allJobNames.emplace(name);
 	}
-
-	/* DEBUG INPUT
-	inputData[10] = Job("A", 10, 18);
-	inputData[29] = Job("B", 29, 2);
-	inputData[3] = Job("C", 3, 100);
-	inputData[4] = Job("D", 4, 43);
-	inputData[1] = Job("E", 29, 92);*/
+	
+	/*DEBUG INPUT
+	inputData[10].push_back(Job("A", 10, 18));
+	inputData[29].push_back(Job("B", 29, 2));
+	inputData[3].push_back(Job("C", 3, 100));
+	inputData[4].push_back(Job("D", 4, 43));
+	inputData[1].push_back(Job("Unknown", 1, 92)); */
 }
 
 void setupSchedulers() {
@@ -47,24 +47,40 @@ void outputSimulation() {
 	}
 	std::cout << std::endl;
 
-	while (!Scheduler::areCompleted && !inputData.empty()) {
+	bool isInputDataExhausted = false;
+	while (!Scheduler::areCompleted || isInputDataExhausted) {
 		//add process to queue if has arrived
-		if (!inputData[Scheduler::timePassed].mName.empty()) {
-			for (int i = 0; i<schedulers.size(); i++)
+		if (!inputData[Scheduler::timePassed].empty()) {
+			for (int i = 0; i<inputData[Scheduler::timePassed].size(); i++)
 			{
-				schedulers[i]->arrive(inputData[Scheduler::timePassed]);
+				for (int j = 0; j < schedulers.size(); j++)
+				{
+					schedulers[j]->arrive(inputData[Scheduler::timePassed][i]);
+				}
+				std::cout << "* ARRIVED: " << inputData[Scheduler::timePassed][i].mName << std::endl;
+				allJobNames.emplace(inputData[Scheduler::timePassed][i].mName);
 			}
-			std::cout << "* ARRIVED: " << inputData[Scheduler::timePassed].mName << std::endl;
 			inputData.erase(Scheduler::timePassed);
 		}
 
 		//update process
-		std::cout << Scheduler::timePassed << " ";
+		int count = 0;
+		std::string output;
 		for (int i = 0; i<schedulers.size(); i++)
 		{
-			std::cout << "\t" << schedulers[i]->update() << "\t";
+			output = schedulers[i]->update();
+			if (!output.empty()) {
+				if (count == 0) {
+					std::cout << Scheduler::timePassed << " ";
+				}
+				std::cout << "\t" << output << "\t";
+			}
+			count++;
 		}
-		std::cout << std::endl;
+		if (!output.empty()) {
+			std::cout << std::endl;
+		}
+
 
 		//check if a process has finished
 		for (int i = 0; i<schedulers.size(); i++)
@@ -86,9 +102,18 @@ void outputSimulation() {
 		}
 		Scheduler::areCompleted = areCompleted;
 
+		isInputDataExhausted = false;
+		//check if all input is used up
+		for (int i = 0; i < inputData.size(); i++)
+		{
+			if (!inputData[i].empty()) {
+				isInputDataExhausted = true;
+			}
+		}
+
 		Scheduler::timePassed++;
 	}
-	std::cout << "= SIMULATION COMPLETE" << std::endl;
+	std::cout << "= SIMULATION COMPLETE" << std::endl << std::endl;
 }
 
 void outputTrunoverPerJobStat() {
@@ -110,7 +135,7 @@ void outputTrunoverPerJobStat() {
 		}
 		std::cout << std::endl;
 	}
-	std::cout << "= INDIVIDUAL STATS COMPLETE" << std::endl;
+	std::cout << "= INDIVIDUAL STATS COMPLETE" << std::endl << std::endl;
 }
 
 void outputResponsePerJobStat() {
@@ -132,7 +157,7 @@ void outputResponsePerJobStat() {
 		}
 		std::cout << std::endl;
 	}
-	std::cout << "= INDIVIDUAL STATS COMPLETE" << std::endl;
+	std::cout << "= INDIVIDUAL STATS COMPLETE" << std::endl << std::endl;
 }
 
 void outputAverageStats() {
@@ -151,5 +176,4 @@ int main() {
 	outputTrunoverPerJobStat();
 	outputResponsePerJobStat();
 	outputAverageStats();
-	std::cin.get();
 }

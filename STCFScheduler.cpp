@@ -11,15 +11,14 @@ STCFScheduler::~STCFScheduler()
 }
 
 bool STCFJobComprator(Job left, Job right) {
-	if (left.mDuration == right.mDuration) {
-		return true;
-	}
 	return left.mDuration < right.mDuration;
 }
 
 void STCFScheduler::arrive(Job job) {
 	Scheduler::arrive(job);
-	sort(currentJobs.begin(), currentJobs.end(), &STCFJobComprator);
+	if (!currentJobs.empty() && currentJobs.size() > 1) {
+		sort(currentJobs.begin(), currentJobs.end(), &STCFJobComprator);
+	}
 }
 
 std::string STCFScheduler::update() {
