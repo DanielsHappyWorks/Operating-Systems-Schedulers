@@ -101,13 +101,13 @@ void outputTrunoverPerJobStat() {
 	}
 	std::cout << std::endl;
 
-	for each (std::string jobName in allJobNames)
-	{
+	std::set<std::string>::iterator it;
+	for (it = allJobNames.begin(); it != allJobNames.end(); it++) {
 		std::cout << "T\t";
-		std::cout << jobName << "\t";
+		std::cout << *it << "\t";
 		for (int i = 0; i<schedulers.size(); i++)
 		{
-			std::cout << schedulers[i]->turnoverTimes[jobName] << "\t";
+			std::cout << schedulers[i]->turnoverTimes[*it] << "\t";
 		}
 		std::cout << std::endl;
 	}
@@ -123,13 +123,13 @@ void outputResponsePerJobStat() {
 	}
 	std::cout << std::endl;
 
-	for each (std::string jobName in allJobNames)
-	{
+	std::set<std::string>::iterator it;
+	for (it = allJobNames.begin(); it != allJobNames.end(); it++) {
 		std::cout << "R\t";
-		std::cout << jobName << "\t";
+		std::cout << *it << "\t";
 		for (int i = 0; i<schedulers.size(); i++)
 		{
-			std::cout << schedulers[i]->responseTimes[jobName] << "\t";
+			std::cout << schedulers[i]->responseTimes[*it] << "\t";
 		}
 		std::cout << std::endl;
 	}
