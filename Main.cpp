@@ -42,18 +42,18 @@ void setupSchedulers() {
 
 void outputSimulation() {
 	std::cout << "T ";
-	for each (Scheduler* scheduler in schedulers)
+	for (int i = 0; i<schedulers.size(); i++)
 	{
-		std::cout << "\t" << scheduler->name << "\t";
+		std::cout << "\t" << schedulers[i]->name << "\t";
 	}
 	std::cout << std::endl;
 
 	while (!Scheduler::areCompleted && !inputData.empty()) {
 		//add process to queue if has arrived
 		if (!inputData[Scheduler::timePassed].mName.empty()) {
-			for each (Scheduler* scheduler in schedulers)
+			for (int i = 0; i<schedulers.size(); i++)
 			{
-				scheduler->arrive(inputData[Scheduler::timePassed]);
+				schedulers[i]->arrive(inputData[Scheduler::timePassed]);
 			}
 			std::cout << "* ARRIVED: " << inputData[Scheduler::timePassed].mName << std::endl;
 			inputData.erase(Scheduler::timePassed);
@@ -61,26 +61,26 @@ void outputSimulation() {
 
 		//update process
 		std::cout << Scheduler::timePassed << " ";
-		for each (Scheduler* scheduler in schedulers)
+		for (int i = 0; i<schedulers.size(); i++)
 		{
-			std::cout << "\t" << scheduler->update() << "\t";
+			std::cout << "\t" << schedulers[i]->update() << "\t";
 		}
 		std::cout << std::endl;
 
 		//check if a process has finished
-		for each (Scheduler* scheduler in schedulers)
+		for (int i = 0; i<schedulers.size(); i++)
 		{
-			std::string s = scheduler->handleCompletion();
+			std::string s = schedulers[i]->handleCompletion();
 			if (!s.empty()) {
-				std::cout << "* COMPLETE: " << s << ":" << scheduler->name << std::endl;
+				std::cout << "* COMPLETE: " << s << ":" << schedulers[i]->name << std::endl;
 			}
 		}
 
 		//check if schedulers are completed
 		bool areCompleted = true;
-		for each (Scheduler* scheduler in schedulers)
+		for (int i = 0; i<schedulers.size(); i++)
 		{
-			if (!scheduler->isCompleted) {
+			if (!schedulers[i]->isCompleted) {
 				areCompleted = false;
 				break;
 			}
@@ -95,9 +95,9 @@ void outputSimulation() {
 void outputTrunoverPerJobStat() {
 	//Turnaround Time Per-Job Statistics
 	std::cout << "#\tJOB\t";
-	for each (Scheduler* scheduler in schedulers)
+	for (int i = 0; i<schedulers.size(); i++)
 	{
-		std::cout << scheduler->name << "\t";
+		std::cout << schedulers[i]->name << "\t";
 	}
 	std::cout << std::endl;
 
@@ -105,9 +105,9 @@ void outputTrunoverPerJobStat() {
 	{
 		std::cout << "T\t";
 		std::cout << jobName << "\t";
-		for each (Scheduler* scheduler in schedulers)
+		for (int i = 0; i<schedulers.size(); i++)
 		{
-			std::cout << scheduler->turnoverTimes[jobName] << "\t";
+			std::cout << schedulers[i]->turnoverTimes[jobName] << "\t";
 		}
 		std::cout << std::endl;
 	}
@@ -117,9 +117,9 @@ void outputTrunoverPerJobStat() {
 void outputResponsePerJobStat() {
 	//Response Time Per-Job Statistics
 	std::cout << "#\tJOB\t";
-	for each (Scheduler* scheduler in schedulers)
+	for (int i = 0; i<schedulers.size(); i++)
 	{
-		std::cout << scheduler->name << "\t";
+		std::cout << schedulers[i]->name << "\t";
 	}
 	std::cout << std::endl;
 
@@ -127,9 +127,9 @@ void outputResponsePerJobStat() {
 	{
 		std::cout << "R\t";
 		std::cout << jobName << "\t";
-		for each (Scheduler* scheduler in schedulers)
+		for (int i = 0; i<schedulers.size(); i++)
 		{
-			std::cout << scheduler->responseTimes[jobName] << "\t";
+			std::cout << schedulers[i]->responseTimes[jobName] << "\t";
 		}
 		std::cout << std::endl;
 	}
@@ -138,9 +138,9 @@ void outputResponsePerJobStat() {
 
 void outputAverageStats() {
 	std::cout << "# SCHEDULER AVG_TURNAROUND AVG_RESPONSE" << std::endl;
-	for each (Scheduler* scheduler in schedulers)
+	for (int i = 0; i<schedulers.size(); i++)
 	{
-		std::cout << "@\t" << scheduler->name << "\t" << scheduler->processTurnoverTimeAverage() << "\t" << scheduler->processResponseTimeAverage() << std::endl;
+		std::cout << "@\t" << schedulers[i]->name << "\t" << schedulers[i]->processTurnoverTimeAverage() << "\t" << schedulers[i]->processResponseTimeAverage() << std::endl;
 	}
 	std::cout << "= AGGREGATE STATS COMPLETE" << std::endl;
 }
