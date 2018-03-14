@@ -16,19 +16,34 @@ void processInput() {
 	std::string name;
 	int arrivalTime;
 	int durantion;
-
+	
 	while (std::cin) {
 		std::cin >> name >>  arrivalTime >> durantion;
 		inputData[arrivalTime].push_back(Job(name, arrivalTime, durantion));
 		allJobNames.emplace(name);
 	}
 	
-	/*DEBUG INPUT
+	/*
+	//DEBUG INPUT SIMPLE
 	inputData[10].push_back(Job("A", 10, 18));
 	inputData[29].push_back(Job("B", 29, 2));
 	inputData[3].push_back(Job("C", 3, 100));
 	inputData[4].push_back(Job("D", 4, 43));
-	inputData[1].push_back(Job("Unknown", 1, 92)); */
+	inputData[1].push_back(Job("Unknown", 1, 92)); 
+
+	DEBUG INPUT COMPLEX
+	inputData[2].push_back(Job("JOB_0", 2, 5));
+	inputData[9].push_back(Job("JOB_1", 9, 9));
+	inputData[11].push_back(Job("JOB_2", 11, 5));
+	inputData[0].push_back(Job("JOB_3", 0, 7));
+	inputData[4].push_back(Job("JOB_4", 4, 8));
+	inputData[15].push_back(Job("JOB_5", 15, 7));
+	inputData[6].push_back(Job("JOB_6", 6, 3));
+	inputData[6].push_back(Job("JOB_7", 6, 9));
+	inputData[16].push_back(Job("JOB_8", 16, 3));
+	inputData[18].push_back(Job("JOB_9", 18, 3));
+	inputData[10].push_back(Job("JOB_10", 10, 6));*/
+
 }
 
 void setupSchedulers() {
@@ -153,7 +168,7 @@ void outputResponsePerJobStat() {
 		std::cout << *it << "\t";
 		for (int i = 0; i<schedulers.size(); i++)
 		{
-			std::cout << schedulers[i]->responseTimes[*it] << "\t";
+			std::cout << ((schedulers[i]->responseTimes[*it] == -1) ? 0 : schedulers[i]->responseTimes[*it]) << "\t";
 		}
 		std::cout << std::endl;
 	}

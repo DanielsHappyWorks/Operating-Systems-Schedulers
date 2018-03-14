@@ -1,6 +1,6 @@
 #include "Scheduler.hpp"
 
-int Scheduler::timePassed = 1;
+int Scheduler::timePassed = 0;
 bool Scheduler::areCompleted = false;
 
 Scheduler::Scheduler(std::string name) :name(name), isCompleted(false)
@@ -21,7 +21,7 @@ std::string Scheduler::update() {
 		std::string jobName = currentJobs.front().process();
 		if (!jobName.empty() && !responseTimes[jobName]) {
 			Job job = currentJobs.front();
-			responseTimes[jobName] = (Scheduler::timePassed+1 - job.mArrival);
+			responseTimes[jobName] = ((Scheduler::timePassed - job.mArrival) != 0 ? (Scheduler::timePassed - job.mArrival) : -1);
 		}
 		return jobName;
 	}
@@ -65,7 +65,7 @@ float Scheduler::processResponseTimeAverage() {
 	std::map<std::string, int>::iterator it;
 	for (it = responseTimes.begin(); it != responseTimes.end(); it++)
 	{
-		responseSum += it->second;
+		responseSum += ((it->second == -1) ? 0 : it->second);
 		counter++;
 	}
 

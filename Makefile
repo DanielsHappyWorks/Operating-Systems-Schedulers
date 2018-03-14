@@ -22,7 +22,9 @@ demo2: demo2_input.txt $(Project_Name)
 demo3: demo3_input.txt $(Project_Name)
 	./$(Project_Name) < $@_input.txt | tee $@_output.txt
 
-demo1_input.txt:
+demo
+
+_input.txt:
 	$(Job_Generator) > $@
 
 demo2_input.txt:
@@ -30,3 +32,8 @@ demo2_input.txt:
 
 demo3_input.txt:
 	$(Job_Generator) > $@
+
+gitclean:
+	git clean -f
+	git reset --hard
+	git pull

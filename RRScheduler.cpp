@@ -1,7 +1,6 @@
 #include "RRScheduler.hpp"
 
 
-
 RRScheduler::RRScheduler(std::string name, int stepSize) : Scheduler(name), mStepSize(stepSize), mCurrentStep(0), mCurrentJob(0), mMarkJobForCompletion(-1)
 {
 }
@@ -26,8 +25,8 @@ std::string RRScheduler::update() {
 		jobName = currentJobs.at(mCurrentJob).mName;
 
 		if (!jobName.empty() && !responseTimes[jobName]) {
-			Job job = currentJobs.front();
-			responseTimes[jobName] = (Scheduler::timePassed + 1 - job.mArrival);
+			Job job = currentJobs.at(mCurrentJob);
+			responseTimes[jobName] = ((Scheduler::timePassed - job.mArrival) != 0 ? (Scheduler::timePassed - job.mArrival) : -1);
 		}
 
 		if (!currentJobs.at(mCurrentJob).isCompleted().empty()) {
@@ -56,7 +55,7 @@ std::string RRScheduler::update() {
 std::string RRScheduler::handleCompletion() {
 	if (mMarkJobForCompletion != -1) {
 		std::string jobName = currentJobs.at(mMarkJobForCompletion).mName;
-		Job job = currentJobs.front();
+		Job job = currentJobs.at(mMarkJobForCompletion);
 		turnoverTimes[jobName] = (Scheduler::timePassed + 1 - job.mArrival);
 		currentJobs.erase(currentJobs.begin() + mMarkJobForCompletion);
 		return jobName;
