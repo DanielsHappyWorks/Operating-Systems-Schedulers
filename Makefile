@@ -22,8 +22,6 @@ demo2: demo2_input.txt $(Project_Name)
 demo3: demo3_input.txt $(Project_Name)
 	./$(Project_Name) < $@_input.txt | tee $@_output.txt
 
-demo
-
 _input.txt:
 	$(Job_Generator) > $@
 
